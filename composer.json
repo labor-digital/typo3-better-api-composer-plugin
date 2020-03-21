@@ -1,0 +1,38 @@
+{
+	"name": "labor-digital/typo3-better-api-composer-plugin",
+	"type": "composer-plugin",
+	"description": "TYPO3: Provides a global auto-loader hook which runs before TYPO3's class alias loader",
+	"license": "Apache-2.0",
+	"authors": [
+		{
+			"name": "LABOR.digital",
+			"email": "info@labor.tools",
+			"homepage": "https://www.labor.digital",
+			"role": "Company"
+		},
+		{
+			"name": "Martin Neundorfer",
+			"email": "code@neunerlei.eu",
+			"homepage": "https://www.neunerlei.eu",
+			"role": "Developer"
+		}
+	],
+	"support": {
+		"issues": "https://github.com/labor-digital/typo3-better-api-composer-plugin/issues",
+		"source": "https://github.com/labor-digital/typo3-better-api-composer-plugin"
+	},
+	"autoload": {
+		"psr-4": {
+			"LaborDigital\\Typo3BetterApiComposerPlugin\\": "Classes"
+		}
+	},
+	"require": {
+		"composer-plugin-api": "^1.1",
+		"neunerlei/filesystem": "*",
+		"neunerlei/path-util": "*"
+	},
+	"extra": {
+		"class": "LaborDigital\\Typo3BetterApiComposerPlugin\\Plugin"
+	},
+	"version": "2.0.0"
+}
