@@ -1,6 +1,13 @@
-# Change Log
+# Changelog
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
+
+## 2.1.0 (2020-03-21)
+
+
+### Features
+
+* first public release ([d78c53a](https://github.com/labor-digital/typo3-better-api-composer-plugin/commit/d78c53a8228b9a3d4d0c1d83ad6766b1245b6958))
 
 # [1.3.0] (2019-11-27)
 
