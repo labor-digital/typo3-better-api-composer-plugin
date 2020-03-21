@@ -11,12 +11,9 @@ than watching for required classes and trigger the better api bootstrap as soon 
 
 This plugin is a temporary solution to the problem. As soon as I see a better one I will gladly drop this composer plugin again.
 
-## Special Thanks
-Special thanks goes to the folks at [LABOR.digital](https://labor.digital/) (which is the german word for laboratory and not the english "work" :D) for making it possible to publish my code online.
-
 ## Postcardware
-You're free to use this package, but if it makes it to your production environment I highly appreciate you sending me a postcard from your hometown, mentioning which of our package(s) you are using.
+You're free to use this package, but if it makes it to your production environment we highly appreciate you sending us a postcard from your hometown, mentioning which of our package(s) you are using.
 
-You can find my address [here](https://www.neunerlei.eu/). 
+Our address is: LABOR.digital - Fischtorplatz 21 - 55116 Mainz, Germany
 
-Thank you :D 
+We publish all received postcards on our [company website](https://labor.digital). 
