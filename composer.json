@@ -28,8 +28,8 @@
 	},
 	"require": {
 		"composer-plugin-api": "^1.1",
-		"neunerlei/filesystem": "*",
-		"neunerlei/path-util": "*"
+		"neunerlei/filesystem": "^5.2",
+		"neunerlei/path-util": "^2.4"
 	},
 	"extra": {
 		"class": "LaborDigital\\Typo3BetterApiComposerPlugin\\Plugin"
