@@ -2,6 +2,22 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [3.0.0](https://github.com/labor-digital/typo3-better-api-composer-plugin/compare/v2.1.1...v3.0.0) (2020-04-30)
+
+
+### ⚠ BREAKING CHANGES
+
+* This version requires typo3/class-alias-loader 1.1.1 or later
+
+### Features
+
+* make the package work with version 1.1.1 of typo3/class-alias-loader ([6d7132a](https://github.com/labor-digital/typo3-better-api-composer-plugin/commit/6d7132a41653aa27547dd2fcc9059f5609d713ff))
+
+
+### Bug Fixes
+
+* make dependency versions specific ([ad15005](https://github.com/labor-digital/typo3-better-api-composer-plugin/commit/ad15005066e22b2c9ea118130a673fde8d016e5e))
+
 ### [2.1.1](https://github.com/labor-digital/typo3-better-api-composer-plugin/compare/v2.1.0...v2.1.1) (2020-03-21)
 
 ## 2.1.0 (2020-03-21)
