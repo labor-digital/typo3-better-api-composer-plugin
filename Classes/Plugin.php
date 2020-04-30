@@ -23,6 +23,7 @@ use Composer\Composer;
 use Composer\EventDispatcher\EventSubscriberInterface;
 use Composer\IO\IOInterface;
 use Composer\Plugin\PluginInterface;
+use Neunerlei\FileSystem\Fs;
 use Neunerlei\PathUtil\Path;
 
 class Plugin implements PluginInterface, EventSubscriberInterface {
@@ -31,6 +32,16 @@ class Plugin implements PluginInterface, EventSubscriberInterface {
 	 * The event we dispatch to execute our custom php script
 	 */
 	public const EVENT_FIND_VAR_DIR = "betterApi__install--findVarDir";
+	
+	/**
+	 * The path to the include template file, relative to __DIR__
+	 */
+	protected const INCLUDE_TEMPLATE_FILE = "/../Resource/autoloadInclude.tpl.php";
+	
+	/**
+	 * The path to the rendered include file relative to $vendorPath
+	 */
+	protected const INCLUDE_FILE = "/labor-digital/betterApiAutoloadInclude.php";
 	
 	/**
 	 * @var Composer
@@ -47,7 +58,7 @@ class Plugin implements PluginInterface, EventSubscriberInterface {
 	 */
 	public static function getSubscribedEvents() {
 		return [
-			"post-autoload-dump" => ["run", -500],
+			"pre-autoload-dump" => ["run", -500],
 		];
 	}
 	
@@ -67,62 +78,50 @@ class Plugin implements PluginInterface, EventSubscriberInterface {
 		$config = $this->composer->getConfig();
 		$vendorPath = Path::normalize(realpath($config->get("vendor-dir")));
 		
-		// Prepare the transferred files
+		// Find the var directory path
 		$autoloadFilePath = $vendorPath . "/autoload.php";
 		$varPath = $this->findVarPath($autoloadFilePath);
 		
-		// Rewrite the autoload file
-		$this->modifyAutoloadFile($autoloadFilePath, $varPath);;
+		// Build and register autoload file
+		$this->buildAutoloadFile($vendorPath, $varPath);
+		$this->registerAutoloadFile($vendorPath);
 	}
 	
 	/**
-	 * Injects our hook into the composer autoload file.
-	 * We expect the class alias loader to be present in the installation.
-	 * If we don't find the alias loader we try to use the default composer class loader as fallback
-	 * to position the hook.
+	 * Loads the template of the autoload file, injects the required placeholders
+	 * and dumps it on the final location
+	 *
+	 * @param string $vendorPath
+	 * @param string $varPath
 	 */
-	public function modifyAutoloadFile(string $autoloadFilePath, string $varPath) {
+	protected function buildAutoloadFile(string $vendorPath, string $varPath): void {
 		
-		// Check if we can work with the file
-		if (!file_exists($autoloadFilePath)) {
-			$this->io->write("<error>Better API - Composer Plugin: Could not modify the autoload.php file, because it does not exist at: $autoloadFilePath</error>");
-			return;
-		}
-		if (!is_readable($autoloadFilePath) || !is_writable($autoloadFilePath)) {
-			$this->io->write("<error>Better API - Composer Plugin: Could not modify the autoload.php file, because I don't have the correct access rights!</error>");
-			return;
-		}
+		// Make var path relative to the vendor path
+		$varPathRelative = Path::makeRelative($varPath, $vendorPath);
 		
-		// Tamper with the content
-		$content = file_get_contents($autoloadFilePath);
-		preg_match("/return ClassAliasLoaderInit[^;]*;/", $content, $m);
-		if (empty($m[0])) {
-			$this->io->write("<warning>Better API - Composer Plugin: There is no TYPO3 class alias loader registered in your autoload.php, there is something wrong here...</warning>");
-			preg_match('/return ComposerAutoloaderInit[^;]*;/', $content, $m);
-			if (empty($m[0])) {
-				$this->io->write("<error>Better API - Composer Plugin: Failed to inject hook into the autoload.php</error>");
-				return;
-			}
-		}
-		$marker = $m[0];
-		$src = str_replace(["return ", ";"], "", $m[0]);
+		// Load and build the template
+		$tpl = Fs::readFile(__DIR__ . static::INCLUDE_TEMPLATE_FILE);
+		$tpl = str_replace("{{varPath}}", $varPathRelative, $tpl);
 		
-		// Build the injected content
-		$injectedContent = "// Better API Class loader definition" . PHP_EOL;
-		$composerDirReplacementFix = "__" . "DIR" . "__";
-		$injectedContent .= "if(!defined(\"BETTER_API_TYPO3_VENDOR_PATH\")) define(\"BETTER_API_TYPO3_VENDOR_PATH\", $composerDirReplacementFix);" . PHP_EOL;
-		$injectedContent .= "if(!defined(\"BETTER_API_TYPO3_VAR_PATH\")) define(\"BETTER_API_TYPO3_VAR_PATH\", \"" . $varPath . "\");" . PHP_EOL;
-		$injectedContent .= "include_once(\"" . (new \ReflectionClass(BetterApiClassLoaderHook::class))->getFileName() . "\");" . PHP_EOL;
-		$injectedContent .= "return \\" . BetterApiClassLoaderHook::class . "::execute(" . PHP_EOL;
-		$injectedContent .= "    // Original class loader definition" . PHP_EOL;
-		$injectedContent .= "    " . $src . PHP_EOL . ");";
+		// Write the template into the output file
+		$filePath = $vendorPath . static::INCLUDE_FILE;
+		Fs::writeFile($filePath, $tpl);
+		$this->io->write("<info>Better API - Composer Plugin: Built dynamic autoloading file at: $filePath</info>", TRUE, IOInterface::VERBOSE);
 		
-		// Replace the marker
-		$contentNew = str_replace($marker, $injectedContent, $content);
-		
-		// Inject the content
-		file_put_contents($autoloadFilePath, $contentNew);
-		$this->io->write("<info>Better API - Composer Plugin: Successfully injected the better API class loader hook in autoload.php</info>");
+	}
+	
+	/**
+	 * Registers the autoload file as last possible include in the composer autoloader
+	 *
+	 * @param string $vendorPath
+	 */
+	protected function registerAutoloadFile(string $vendorPath): void {
+		// Register the file in the root package
+		$rootPackage = $this->composer->getPackage();
+		$autoloadDefinition = $rootPackage->getAutoload();
+		$autoloadDefinition['files'][] = $vendorPath . static::INCLUDE_FILE;
+		$rootPackage->setAutoload($autoloadDefinition);
+		$this->io->write("<info>Better API - Composer Plugin: Injected dynamic autoload file into root package</info>", TRUE, IOInterface::VERBOSE);
 	}
 	
 	/**
@@ -142,19 +141,22 @@ class Plugin implements PluginInterface, EventSubscriberInterface {
 		$dispatcher->dispatch(static::EVENT_FIND_VAR_DIR);
 		
 		// Load the var directory
-		if (!file_exists($temporaryFilePath) || !is_readable($temporaryFilePath)) {
+		if (!fs::isReadable($temporaryFilePath)) {
 			$this->io->write("<error>Better API - Composer Plugin: Could not read the interchange file at: $temporaryFilePath</error>");
 			return "";
 		}
-		$varPath = file_get_contents($temporaryFilePath);
-		@unlink($temporaryFilePath);
+		$varPath = Fs::readFile($temporaryFilePath);
+		Fs::remove($temporaryFilePath);
 		$varPath = rtrim($varPath, "/\\") . "/";
 		$varPath = str_replace("\\", "/", $varPath);
 		
 		// Create the directory if required
-		if (!file_exists($varPath)) @mkdir($varPath, 0777, TRUE);
-		if (!file_exists($varPath) || !is_readable($varPath))
+		try {
+			Fs::mkdir($varPath);
+			if (!fs::isReadable($varPath)) throw new \Exception();
+		} catch (\Exception $e) {
 			$this->io->write("<error>Better API - Composer Plugin: There seems to be an issue with the var directory at: $varPath</error>");
+		}
 		
 		// Done
 		return $varPath;

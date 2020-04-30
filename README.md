@@ -1,7 +1,6 @@
 # Better Api Composer Plugin
 To provide extended functionality to the TYPO3 core we need to listen for loaded classes. 
-However, TYPO3 uses the ClassAliasLoader which A.) modifies the autoload.php and B.) registers
-itself as first possible autoloader (spl_autoload_register -> FLAG prepend is set to true).
+However, TYPO3 uses the ClassAliasLoader which registers itself (you can configure this now, but the default is still TRUE) as first possible autoloader (spl_autoload_register -> FLAG prepend is set to true).
 
 The resulting problem is, that there is literary no way of adding an additional class loader to the stack. 
 
