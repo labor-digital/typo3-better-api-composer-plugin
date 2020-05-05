@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [3.0.1](https://github.com/labor-digital/typo3-better-api-composer-plugin/compare/v3.0.0...v3.0.1) (2020-05-05)
+
+
+### Bug Fixes
+
+* make sure composer dies if varDirFinder fails ([4dcbecc](https://github.com/labor-digital/typo3-better-api-composer-plugin/commit/4dcbecc88414a7918e1a755c4cd37ba662ed3a34))
+* make sure the plugin runs correctly even if there is no autoload.php already present ([53d60c6](https://github.com/labor-digital/typo3-better-api-composer-plugin/commit/53d60c63b2f7565516ffdf19151685186abc7b04))
+
 ## [3.0.0](https://github.com/labor-digital/typo3-better-api-composer-plugin/compare/v2.1.1...v3.0.0) (2020-04-30)
 
 
