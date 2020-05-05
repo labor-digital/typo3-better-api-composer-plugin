@@ -23,8 +23,10 @@ use Composer\Composer;
 use Composer\EventDispatcher\EventSubscriberInterface;
 use Composer\IO\IOInterface;
 use Composer\Plugin\PluginInterface;
+use Exception;
 use Neunerlei\FileSystem\Fs;
 use Neunerlei\PathUtil\Path;
+use RuntimeException;
 
 class Plugin implements PluginInterface, EventSubscriberInterface {
 	
@@ -54,11 +56,18 @@ class Plugin implements PluginInterface, EventSubscriberInterface {
 	protected $io;
 	
 	/**
+	 * The absolute path to the vendor directory
+	 * @var string
+	 */
+	protected $vendorPath;
+	
+	/**
 	 * @inheritDoc
 	 */
 	public static function getSubscribedEvents() {
 		return [
-			"pre-autoload-dump" => ["run", -500],
+			"pre-autoload-dump"  => ["onPreAutoloadDump", -500],
+			"post-autoload-dump" => ["onPostAutoloadDump", 500],
 		];
 	}
 	
@@ -68,43 +77,41 @@ class Plugin implements PluginInterface, EventSubscriberInterface {
 	public function activate(Composer $composer, IOInterface $io) {
 		$this->composer = $composer;
 		$this->io = $io;
+		$config = $this->composer->getConfig();
+		$this->vendorPath = Path::normalize(realpath($config->get("vendor-dir")));
 	}
 	
 	/**
-	 * The main entry point for our plugin
+	 * Register our autoload file to the main package
+	 * We will fill the file with contents, after the auto-load definition has been dumped
 	 */
-	public function run() {
-		// Find the autoload file name
-		$config = $this->composer->getConfig();
-		$vendorPath = Path::normalize(realpath($config->get("vendor-dir")));
-		
-		// Find the var directory path
-		$autoloadFilePath = $vendorPath . "/autoload.php";
-		$varPath = $this->findVarPath($autoloadFilePath);
-		
-		// Build and register autoload file
-		$this->buildAutoloadFile($vendorPath, $varPath);
-		$this->registerAutoloadFile($vendorPath);
+	public function onPreAutoloadDump() {
+		$this->registerAutoloadFile();
+	}
+	
+	/**
+	 * Builds the content
+	 */
+	public function onPostAutoloadDump() {
+		$this->buildAutoloadFile();
 	}
 	
 	/**
 	 * Loads the template of the autoload file, injects the required placeholders
 	 * and dumps it on the final location
-	 *
-	 * @param string $vendorPath
-	 * @param string $varPath
 	 */
-	protected function buildAutoloadFile(string $vendorPath, string $varPath): void {
+	protected function buildAutoloadFile(): void {
 		
 		// Make var path relative to the vendor path
-		$varPathRelative = Path::makeRelative($varPath, $vendorPath);
+		$varPath = $this->findVarPath();
+		$varPathRelative = Path::makeRelative($varPath, $this->vendorPath);
 		
 		// Load and build the template
 		$tpl = Fs::readFile(__DIR__ . static::INCLUDE_TEMPLATE_FILE);
 		$tpl = str_replace("{{varPath}}", $varPathRelative, $tpl);
 		
 		// Write the template into the output file
-		$filePath = $vendorPath . static::INCLUDE_FILE;
+		$filePath = $this->vendorPath . static::INCLUDE_FILE;
 		Fs::writeFile($filePath, $tpl);
 		$this->io->write("<info>Better API - Composer Plugin: Built dynamic autoloading file at: $filePath</info>", TRUE, IOInterface::VERBOSE);
 		
@@ -112,14 +119,14 @@ class Plugin implements PluginInterface, EventSubscriberInterface {
 	
 	/**
 	 * Registers the autoload file as last possible include in the composer autoloader
-	 *
-	 * @param string $vendorPath
 	 */
-	protected function registerAutoloadFile(string $vendorPath): void {
+	protected function registerAutoloadFile(): void {
 		// Register the file in the root package
 		$rootPackage = $this->composer->getPackage();
 		$autoloadDefinition = $rootPackage->getAutoload();
-		$autoloadDefinition['files'][] = $vendorPath . static::INCLUDE_FILE;
+		$includeFile = $this->vendorPath . static::INCLUDE_FILE;
+		Fs::touch($includeFile);
+		$autoloadDefinition["files"][] = $includeFile;
 		$rootPackage->setAutoload($autoloadDefinition);
 		$this->io->write("<info>Better API - Composer Plugin: Injected dynamic autoload file into root package</info>", TRUE, IOInterface::VERBOSE);
 	}
@@ -128,22 +135,22 @@ class Plugin implements PluginInterface, EventSubscriberInterface {
 	 * Finds the var directory by calling the varDirFinder.php we ship in the bin directory.
 	 * It will call the TYPO3 SystemEnvironmentBuilder and send the directory back to us.
 	 *
-	 * @param string $autoloadFilePath
-	 *
 	 * @return string
 	 * @throws \Exception
 	 */
-	protected function findVarPath(string $autoloadFilePath): string {
+	protected function findVarPath(): string {
 		// Dispatch the event to call our custom script
 		$temporaryFilePath = sys_get_temp_dir() . "/typo3-var-dir.txt";
 		$dispatcher = $this->composer->getEventDispatcher();
+		$autoloadFilePath = $this->vendorPath . "/autoload.php";
 		$dispatcher->addListener(static::EVENT_FIND_VAR_DIR, "@php " . __DIR__ . "/../bin/varDirFinder.php \"$autoloadFilePath\" \"$temporaryFilePath\"");
 		$dispatcher->dispatch(static::EVENT_FIND_VAR_DIR);
 		
 		// Load the var directory
 		if (!fs::isReadable($temporaryFilePath)) {
-			$this->io->write("<error>Better API - Composer Plugin: Could not read the interchange file at: $temporaryFilePath</error>");
-			return "";
+			$message = "Could not read the interchange file at: $temporaryFilePath";
+			$this->io->write("<error>Better API - Composer Plugin: $message</error>");
+			throw new RuntimeException($message);
 		}
 		$varPath = Fs::readFile($temporaryFilePath);
 		Fs::remove($temporaryFilePath);
@@ -153,9 +160,11 @@ class Plugin implements PluginInterface, EventSubscriberInterface {
 		// Create the directory if required
 		try {
 			Fs::mkdir($varPath);
-			if (!fs::isReadable($varPath)) throw new \Exception();
-		} catch (\Exception $e) {
-			$this->io->write("<error>Better API - Composer Plugin: There seems to be an issue with the var directory at: $varPath</error>");
+			if (!fs::isReadable($varPath)) throw new Exception();
+		} catch (Exception $e) {
+			$message = "There seems to be an issue with the var directory at: $varPath";
+			$this->io->write("<error>Better API - Composer Plugin: $message</error>");
+			throw new RuntimeException($message, NULL, $e);
 		}
 		
 		// Done
