@@ -29,9 +29,15 @@ if (php_sapi_name() !== 'cli') die("This is only for CLI execution!");
 
 // Get arguments
 $autoLoadFile = $argv[1];
-if (empty($autoLoadFile) || !file_exists($autoLoadFile)) die("Missing autoload file declaration!");
+if (empty($autoLoadFile) || !file_exists($autoLoadFile)) {
+	echo "Failed to find \"var\" directory: Missing autoload file declaration!" . PHP_EOL;
+	exit(1);
+}
 $tempFile = $argv[2];
-if (empty($tempFile)) die("Missing temporary file declaration!");
+if (empty($tempFile)) {
+	echo "Failed to find \"var\" directory: Missing temporary file declaration!" . PHP_EOL;
+	exit(1);
+}
 
 // Mark this request
 define("BETTER_API_COMPOSER_PLUGIN_VAR_DIR_FINDER", TRUE);
@@ -43,5 +49,10 @@ include $autoLoadFile;
 $_SERVER['argv'][0] = "/index.php";
 
 // Build the environment and store the var path
-SystemEnvironmentBuilder::run(0, SystemEnvironmentBuilder::REQUESTTYPE_CLI);
-Fs::writeFile($tempFile, Environment::getVarPath());
+try {
+	SystemEnvironmentBuilder::run(0, SystemEnvironmentBuilder::REQUESTTYPE_CLI);
+	Fs::writeFile($tempFile, Environment::getVarPath());
+} catch (Exception $e) {
+	echo $e->getMessage() . PHP_EOL;
+	exit(1);
+}
