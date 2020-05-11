@@ -67,7 +67,7 @@ class Plugin implements PluginInterface, EventSubscriberInterface {
 	public static function getSubscribedEvents() {
 		return [
 			"pre-autoload-dump"  => ["onPreAutoloadDump", -500],
-			"post-autoload-dump" => ["onPostAutoloadDump", 500],
+			"post-autoload-dump" => ["onPostAutoloadDump", -500],
 		];
 	}
 	
