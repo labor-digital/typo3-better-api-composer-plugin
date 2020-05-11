@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [3.0.2](https://github.com/labor-digital/typo3-better-api-composer-plugin/compare/v3.0.1...v3.0.2) (2020-05-11)
+
+
+### Bug Fixes
+
+* make sure the post-autoload-dump method as late as possible ([c021838](https://github.com/labor-digital/typo3-better-api-composer-plugin/commit/c0218388b0b5f9d859508561d1daf6c2e1c49daa))
+
 ### [3.0.1](https://github.com/labor-digital/typo3-better-api-composer-plugin/compare/v3.0.0...v3.0.1) (2020-05-05)
 
 
