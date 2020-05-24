@@ -139,6 +139,14 @@ class Plugin implements PluginInterface, EventSubscriberInterface {
 	 * @throws \Exception
 	 */
 	protected function findVarPath(): string {
+		// Check if we have a "debug" flag set
+		$extra = $this->composer->getPackage()->getExtra();
+		if (isset($extra["T3BA"]) && isset($extra["T3BA"]["isDev"]) && $extra["T3BA"]["isDev"]) {
+			$dummyDir = sys_get_temp_dir() . "/T3BA_var";
+			Fs::mkdir($dummyDir);
+			return $dummyDir . "/";
+		}
+		
 		// Dispatch the event to call our custom script
 		$temporaryFilePath = sys_get_temp_dir() . "/typo3-var-dir.txt";
 		$dispatcher = $this->composer->getEventDispatcher();

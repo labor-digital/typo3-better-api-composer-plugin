@@ -10,6 +10,20 @@ than watching for required classes and trigger the better api bootstrap as soon 
 
 This plugin is a temporary solution to the problem. As soon as I see a better one I will gladly drop this composer plugin again.
 
+## Usage in a development environment
+If you want to install a package, that somehow depends on this plugin without running in a real TYPO3 project (aka. Dev or Test Scenario),
+make sure you set the following flag in your composer.json to avoid crashes!
+
+```json
+{
+  "extra": {
+    "T3BA": {
+      "isDev": true  
+    }
+  }
+}
+```
+
 ## Postcardware
 You're free to use this package, but if it makes it to your production environment we highly appreciate you sending us a postcard from your hometown, mentioning which of our package(s) you are using.
 
