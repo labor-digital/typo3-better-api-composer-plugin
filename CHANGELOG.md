@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [3.1.0](https://github.com/labor-digital/typo3-better-api-composer-plugin/compare/v3.0.2...v3.1.0) (2020-05-25)
+
+
+### Features
+
+* implement isDev flag to avoid issues in test environments ([743ca85](https://github.com/labor-digital/typo3-better-api-composer-plugin/commit/743ca85b4cf59c8cdb0215235779d5fb238fde9e))
+
 ### [3.0.2](https://github.com/labor-digital/typo3-better-api-composer-plugin/compare/v3.0.1...v3.0.2) (2020-05-11)
 
 
