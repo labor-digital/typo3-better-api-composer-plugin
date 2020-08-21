@@ -23,7 +23,7 @@
 	},
 	"autoload": {
 		"psr-4": {
-			"LaborDigital\\Typo3BetterApiComposerPlugin\\": "Classes"
+			"LaborDigital\\T3BA\\ComposerPlugin\\": "Classes"
 		}
 	},
 	"require": {
@@ -32,8 +32,12 @@
 		"neunerlei/path-util": "^2.4",
 		"typo3/class-alias-loader": "^1.1.1"
 	},
+  "require-dev": {
+      "roave/security-advisories": "dev-master",
+      "composer/composer": "^1.10"
+  },
 	"extra": {
-		"class": "LaborDigital\\Typo3BetterApiComposerPlugin\\Plugin"
+		"class": "LaborDigital\\T3BA\\ComposerPlugin\\Plugin"
 	},
 	"version": "3.1.0"
 }
