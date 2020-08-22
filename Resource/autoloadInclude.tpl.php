@@ -17,14 +17,16 @@
  * Last modified: 2020.04.30 at 17:48
  */
 
-// Better API Class loader definition
-use LaborDigital\Typo3BetterApi\BetterApiInit;
+use LaborDigital\T3BA\Core\Kernel;
 
-if (!defined("BETTER_API_TYPO3_VENDOR_PATH")) define("BETTER_API_TYPO3_VENDOR_PATH", dirname(__DIR__));
-if (!defined("BETTER_API_TYPO3_VAR_PATH")) define("BETTER_API_TYPO3_VAR_PATH", BETTER_API_TYPO3_VENDOR_PATH . "/{{varPath}}");
+if (! defined("BETTER_API_TYPO3_VENDOR_PATH")) {
+    define("BETTER_API_TYPO3_VENDOR_PATH", dirname(__DIR__));
+}
+if (! defined("BETTER_API_TYPO3_VAR_PATH")) {
+    define("BETTER_API_TYPO3_VAR_PATH", BETTER_API_TYPO3_VENDOR_PATH . "/{{varPath}}");
+}
 
-// Initialize the script if possible
 $composerClassLoader = require BETTER_API_TYPO3_VENDOR_PATH . "/autoload.php";
-if (class_exists(BetterApiInit::class))
-	BetterApiInit::init($composerClassLoader);
-	
+if (class_exists(Kernel::class)) {
+    Kernel::init($composerClassLoader);
+}
