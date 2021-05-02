@@ -36,7 +36,7 @@ declare(strict_types=1);
  * Last modified: 2019.09.24 at 14:17
  */
 
-namespace LaborDigital\T3BA\ComposerPlugin;
+namespace LaborDigital\T3ba\ComposerPlugin;
 
 use Composer\Composer;
 use Composer\EventDispatcher\EventSubscriberInterface;
@@ -53,7 +53,7 @@ class Plugin implements PluginInterface, EventSubscriberInterface
     /**
      * The event we dispatch to execute our custom php script
      */
-    public const EVENT_FIND_VAR_DIR = 'betterApi__install--findVarDir';
+    public const EVENT_FIND_VAR_DIR = 't3ba__install--findVarDir';
     
     /**
      * The path to the include template file, relative to __DIR__
@@ -63,7 +63,7 @@ class Plugin implements PluginInterface, EventSubscriberInterface
     /**
      * The path to the rendered include file relative to $vendorPath
      */
-    protected const INCLUDE_FILE = '/labor-digital/betterApiAutoloadInclude.php';
+    protected const INCLUDE_FILE = '/labor-digital/t3baAutoloadInclude.php';
     
     /**
      * @var Composer
@@ -155,7 +155,7 @@ class Plugin implements PluginInterface, EventSubscriberInterface
         Fs::touch($includeFile);
         $autoloadDefinition['files'][] = $includeFile;
         $rootPackage->setAutoload($autoloadDefinition);
-        $this->io->write('<info>Better API - Composer Plugin: Injected dynamic autoload file into root package</info>',
+        $this->io->write('<info>T3BA - Composer Plugin: Injected dynamic autoload file into root package</info>',
             true, IOInterface::VERBOSE);
     }
     
@@ -170,8 +170,8 @@ class Plugin implements PluginInterface, EventSubscriberInterface
     {
         // Check if we have a "debug" flag set
         $extra = $this->composer->getPackage()->getExtra();
-        if (! empty($extra['T3BA']['isDev'])) {
-            $dummyDir = sys_get_temp_dir() . '/T3BA_var';
+        if (! empty($extra['t3ba']['isDev'])) {
+            $dummyDir = sys_get_temp_dir() . '/t3ba_var';
             Fs::mkdir($dummyDir);
             
             return $dummyDir . '/';
@@ -187,7 +187,7 @@ class Plugin implements PluginInterface, EventSubscriberInterface
         
         // Load the var directory
         if (! fs::isReadable($temporaryFilePath)) {
-            $message = 'Could not read the interchange file at: $temporaryFilePath';
+            $message = 'Could not read the interchange file at: ' . $temporaryFilePath;
             $this->io->write('<error>Better API - Composer Plugin: $message</error>');
             throw new RuntimeException($message);
         }
@@ -204,7 +204,7 @@ class Plugin implements PluginInterface, EventSubscriberInterface
                 throw new Exception();
             }
         } catch (Exception $e) {
-            $message = 'There seems to be an issue with the var directory at: $varPath';
+            $message = 'There seems to be an issue with the var directory at: ' . $varPath;
             $this->io->write('<error>Better API - Composer Plugin: $message</error>');
             throw new RuntimeException($message, null, $e);
         }

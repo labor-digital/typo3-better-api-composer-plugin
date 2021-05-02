@@ -17,7 +17,7 @@
  * Last modified: 2020.08.22 at 21:37
  */
 
-use LaborDigital\T3BA\Core\Kernel;
+use LaborDigital\T3ba\Core\Kernel;
 
 if (! defined("BETTER_API_TYPO3_VENDOR_PATH")) {
     define("BETTER_API_TYPO3_VENDOR_PATH", dirname(__DIR__));

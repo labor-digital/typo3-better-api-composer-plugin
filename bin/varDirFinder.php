@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 /*
  * Copyright 2021 LABOR.digital
  *
@@ -34,12 +35,12 @@ if (php_sapi_name() !== 'cli') {
 // Get arguments
 $autoLoadFile = $argv[1];
 if (empty($autoLoadFile) || ! file_exists($autoLoadFile)) {
-    echo "Failed to find \"var\" directory: Missing autoload file declaration!" . PHP_EOL;
+    echo 'Failed to find "var" directory: Missing autoload file declaration!' . PHP_EOL;
     exit(1);
 }
 $tempFile = $argv[2];
 if (empty($tempFile)) {
-    echo "Failed to find \"var\" directory: Missing temporary file declaration!" . PHP_EOL;
+    echo 'Failed to find "var" directory: Missing temporary file declaration!' . PHP_EOL;
     exit(1);
 }
 
@@ -50,7 +51,7 @@ define("BETTER_API_COMPOSER_PLUGIN_VAR_DIR_FINDER", true);
 include $autoLoadFile;
 
 // Simulate that we are accessing the frontend entry point
-$_SERVER['argv'][0] = "/index.php";
+$_SERVER['argv'][0] = '/index.php';
 
 // Build the environment and store the var path
 try {
