@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [3.2.0](https://github.com/labor-digital/typo3-better-api-composer-plugin/compare/v3.1.0...v3.2.0) (2021-05-04)
+
+
+### Features
+
+* allow installation on composer 2 ([ed44474](https://github.com/labor-digital/typo3-better-api-composer-plugin/commit/ed444745a7e8e43a8318be80eb0e901ab2a5c1f8))
+
+
+### Bug Fixes
+
+* make Plugin compoatible with composer v2 ([72b9480](https://github.com/labor-digital/typo3-better-api-composer-plugin/commit/72b9480927d53fe00dbf70e965285525ef6048e7))
+
 ## [3.1.0](https://github.com/labor-digital/typo3-better-api-composer-plugin/compare/v3.0.2...v3.1.0) (2020-05-25)
 
 
