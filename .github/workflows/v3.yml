@@ -3,7 +3,7 @@ name: Create new Release
 on:
   push:
     branches:
-      - v9
+      - v3
     paths-ignore:
       - 'composer.json'
       - 'package.json'
