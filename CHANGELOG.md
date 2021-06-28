@@ -2,17 +2,42 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
-## [3.2.0](https://github.com/labor-digital/typo3-better-api-composer-plugin/compare/v3.1.0...v3.2.0) (2021-05-04)
-
-
-### Features
-
-* allow installation on composer 2 ([ed44474](https://github.com/labor-digital/typo3-better-api-composer-plugin/commit/ed444745a7e8e43a8318be80eb0e901ab2a5c1f8))
+## [4.0.0-beta.2](https://github.com/labor-digital/typo3-better-api-composer-plugin/compare/v4.0.0-beta.1...v4.0.0-beta.2) (2021-05-03)
 
 
 ### Bug Fixes
 
-* make Plugin compoatible with composer v2 ([72b9480](https://github.com/labor-digital/typo3-better-api-composer-plugin/commit/72b9480927d53fe00dbf70e965285525ef6048e7))
+* make compatible with composer v2 api ([46aeaa2](https://github.com/labor-digital/typo3-better-api-composer-plugin/commit/46aeaa22567fbaab8757fe291522ea9de3f0b9d3))
+
+## [4.0.0-beta.1](https://github.com/labor-digital/typo3-better-api-composer-plugin/compare/v3.1.0...v4.0.0-beta.1) (2021-05-03)
+
+
+### Features
+
+* make new extension key and namespace compatible with TER ([57b907f](https://github.com/labor-digital/typo3-better-api-composer-plugin/commit/57b907fec1512fd4da954e82b7c94372420f549e))
+* support composer api v2 ([a373165](https://github.com/labor-digital/typo3-better-api-composer-plugin/commit/a373165b3af95e5550122e7abf8c2e00771d75f5))
+* update namespace ([2fcb14c](https://github.com/labor-digital/typo3-better-api-composer-plugin/commit/2fcb14c98a712ea539923f79be4c6f97229724c1))
+* update to use the new better api kernel ([fbc7e84](https://github.com/labor-digital/typo3-better-api-composer-plugin/commit/fbc7e841cdf542fc7ea1bc6ef22937806f40fcb3))
+
+## [4.2.0-beta.0](https://github.com/labor-digital/typo3-better-api-composer-plugin/compare/v3.1.0...v4.2.0-beta.0) (2021-05-03)
+
+
+### Features
+
+* make new extension key and namespace compatible with TER ([57b907f](https://github.com/labor-digital/typo3-better-api-composer-plugin/commit/57b907fec1512fd4da954e82b7c94372420f549e))
+* support composer api v2 ([a373165](https://github.com/labor-digital/typo3-better-api-composer-plugin/commit/a373165b3af95e5550122e7abf8c2e00771d75f5))
+* update namespace ([2fcb14c](https://github.com/labor-digital/typo3-better-api-composer-plugin/commit/2fcb14c98a712ea539923f79be4c6f97229724c1))
+* update to use the new better api kernel ([fbc7e84](https://github.com/labor-digital/typo3-better-api-composer-plugin/commit/fbc7e841cdf542fc7ea1bc6ef22937806f40fcb3))
+
+## [4.1.0](https://github.com/labor-digital/typo3-better-api-composer-plugin/compare/v3.1.0...v4.1.0) (2021-05-03)
+
+
+### Features
+
+* make new extension key and namespace compatible with TER ([57b907f](https://github.com/labor-digital/typo3-better-api-composer-plugin/commit/57b907fec1512fd4da954e82b7c94372420f549e))
+* support composer api v2 ([a373165](https://github.com/labor-digital/typo3-better-api-composer-plugin/commit/a373165b3af95e5550122e7abf8c2e00771d75f5))
+* update namespace ([2fcb14c](https://github.com/labor-digital/typo3-better-api-composer-plugin/commit/2fcb14c98a712ea539923f79be4c6f97229724c1))
+* update to use the new better api kernel ([fbc7e84](https://github.com/labor-digital/typo3-better-api-composer-plugin/commit/fbc7e841cdf542fc7ea1bc6ef22937806f40fcb3))
 
 ## [3.1.0](https://github.com/labor-digital/typo3-better-api-composer-plugin/compare/v3.0.2...v3.1.0) (2020-05-25)
 

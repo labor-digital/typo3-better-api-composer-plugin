@@ -1,43 +1,43 @@
 {
-    "name": "labor-digital/typo3-better-api-composer-plugin",
-    "type": "composer-plugin",
-    "description": "TYPO3: Provides a global auto-loader hook which runs before TYPO3's class alias loader",
-    "license": "Apache-2.0",
-    "authors": [
-        {
-            "name": "LABOR.digital",
-            "email": "info@labor.tools",
-            "homepage": "https://www.labor.digital",
-            "role": "Company"
-        },
-        {
-            "name": "Martin Neundorfer",
-            "email": "code@neunerlei.eu",
-            "homepage": "https://www.neunerlei.eu",
-            "role": "Developer"
-        }
-    ],
-    "support": {
-        "issues": "https://github.com/labor-digital/typo3-better-api-composer-plugin/issues",
-        "source": "https://github.com/labor-digital/typo3-better-api-composer-plugin"
-    },
-    "autoload": {
-        "psr-4": {
-            "LaborDigital\\Typo3BetterApiComposerPlugin\\": "Classes"
-        }
-    },
-    "require": {
-        "composer-plugin-api": "^1.0 || ^2.0",
-        "neunerlei/filesystem": "^5.2",
-        "neunerlei/path-util": "^2.4",
-        "typo3/class-alias-loader": "^1.1.1"
-    },
-    "require-dev": {
-        "roave/security-advisories": "dev-master",
-        "composer/composer": "^1.1@dev || ^2.0@dev"
-    },
-    "extra": {
-        "class": "LaborDigital\\Typo3BetterApiComposerPlugin\\Plugin"
-    },
-    "version": "3.2.0"
+	"name": "labor-digital/typo3-better-api-composer-plugin",
+	"type": "composer-plugin",
+	"description": "TYPO3: Provides a global auto-loader hook which runs before TYPO3's class alias loader",
+	"license": "Apache-2.0",
+	"authors": [
+		{
+			"name": "LABOR.digital",
+			"email": "info@labor.tools",
+			"homepage": "https://www.labor.digital",
+			"role": "Company"
+		},
+		{
+			"name": "Martin Neundorfer",
+			"email": "code@neunerlei.eu",
+			"homepage": "https://www.neunerlei.eu",
+			"role": "Developer"
+		}
+	],
+	"support": {
+		"issues": "https://github.com/labor-digital/typo3-better-api-composer-plugin/issues",
+		"source": "https://github.com/labor-digital/typo3-better-api-composer-plugin"
+	},
+	"autoload": {
+		"psr-4": {
+			"LaborDigital\\T3ba\\ComposerPlugin\\": "Classes"
+		}
+	},
+	"require": {
+		"composer-plugin-api": "^1.0 || ^2.0",
+		"neunerlei/filesystem": "^5.2",
+		"neunerlei/path-util": "^2.4",
+		"typo3/class-alias-loader": "^1.1.1"
+	},
+	"require-dev": {
+		"roave/security-advisories": "dev-latest",
+		"composer/composer": "^1.1@dev || ^2.0@dev"
+	},
+	"extra": {
+		"class": "LaborDigital\\T3ba\\ComposerPlugin\\Plugin"
+	},
+	"version": "4.0.0-beta.2"
 }

@@ -4,6 +4,8 @@
 vendor
 docs/node_modules
 
+composer.lock
+
 # IDEA Code Style
 .idea/*
 !.idea/copyright/
