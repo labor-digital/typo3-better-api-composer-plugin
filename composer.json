@@ -39,5 +39,5 @@
     "extra": {
         "class": "LaborDigital\\Typo3BetterApiComposerPlugin\\Plugin"
     },
-    "version": "3.2.0"
+    "version": "3.2.1"
 }
