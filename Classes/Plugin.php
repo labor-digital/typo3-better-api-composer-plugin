@@ -70,7 +70,7 @@ class Plugin implements PluginInterface, EventSubscriberInterface
     {
         return [
             "pre-autoload-dump"  => ["onPreAutoloadDump", -500],
-            "post-autoload-dump" => ["onPostAutoloadDump", -500],
+            "post-autoload-dump" => ["onPostAutoloadDump", 500],
         ];
     }
 
