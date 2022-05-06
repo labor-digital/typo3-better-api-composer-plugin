@@ -2,6 +2,8 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [3.2.4](https://github.com/labor-digital/typo3-better-api-composer-plugin/compare/v3.2.3...v3.2.4) (2022-05-06)
+
 ### [3.2.3](https://github.com/labor-digital/typo3-better-api-composer-plugin/compare/v3.2.2...v3.2.3) (2022-05-06)
 
 
